@@ -1,39 +1,39 @@
 import { useState } from 'react';
 
 const App = () => {
-  const [tasks, setTasks] = useState([]);
+  const [taskText, setTasks] = useState([]);
   const [taskValue, setTaskValue] = useState('');
 
   const handleAddTask = (e) => {
     e.preventDefault();
     if (taskValue.trim()) {
-      setTasks([...tasks, { text: taskValue, completed: false }]);
+      setTasks([...taskText, { text: taskValue, isCompleted: false }]);
       setTaskValue('');
     }
   };
 
   const handleToggle = (index) => {
-    const updated = [...tasks];
-    updated[index].completed = !updated[index].completed;
+    const updated = [...taskText];
+    updated[index].isCompleted = !updated[index].isCompleted;
     setTasks(updated);
   };
 
   const handleDelete = (index) => {
     if (confirm("本当に削除してもよろしいですか？")) {
-      const updated = tasks.filter((_, i) => i !== index);
+      const updated = taskText.filter((_, i) => i !== index);
       setTasks(updated);
     }
   };
 
   const handleEdit = (index, newText) => {
-    const updated = [...tasks];
+    const updated = [...taskText];
     updated[index].text = newText;
     setTasks(updated);
   };
 
-  const total = tasks.length;
-  const completed = tasks.filter(task => task.completed).length;
-  const incomplete = total - completed;
+  const total = taskText.length;
+  const isCompleted = taskText.filter(task => task.isCompleted).length;
+  const incomplete = total - isCompleted;
 
   return (
     <div>
@@ -49,14 +49,14 @@ const App = () => {
       </form>
 
       <ul id="task_list">
-        {tasks.map((task, index) => (
+        {taskText.map((task, index) => (
           <li key={index}>
             <input
               type="checkbox"
-              checked={task.completed}
+              checked={task.isocmpleted}
               onChange={() => handleToggle(index)}
             />
-            <span style={{ textDecoration: task.completed ? 'line-through' : 'none' }}>
+            <span style={{ textDecoration: task.isCompleted ? 'line-through' : 'none' }}>
               {task.text}
             </span>
             <button onClick={() => {
@@ -73,7 +73,7 @@ const App = () => {
       <div>
         <p>総タスク数: <span id="totalTasks">{total}</span></p>
         <p>未完了: <span id="incompleteTasks">{incomplete}</span></p>
-        <p>完了: <span id="completedTasks">{completed}</span></p>
+        <p>完了: <span id="completedTasks">{isCompleted}</span></p>
       </div>
     </div>
   );
